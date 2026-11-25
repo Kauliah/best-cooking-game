@@ -1,0 +1,1 @@
+{"description":"Copper Ladle — a tiny kitchen rush. An original cooking game built for make.fun's best-cooking-game-20261125-0137 bounty.","license":"MIT","name":"copper-ladle","private":true,"scripts":{"hand-in":"node main.ts","serve":"node serve.ts"},"type":"module","version":"1.0.0"}
