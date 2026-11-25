@@ -9,7 +9,7 @@
 // Outside the grader, MAKEFUN_OUTPUT_DIR stands in for /output.
 // Serve the game itself with `node serve.ts` (http://localhost:8080).
 
-import { cpSync, existsSync, mkdirSync, rmSync, writeFileSync } from 'node:fs';
+import { cpSync, existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { buildDossier } from './vendor/makefun-game.ts';
@@ -41,4 +41,11 @@ const dossier = buildDossier(out, {
   game_path_max_bytes: 1000,
 });
 writeFileSync(join(out, 'dossier.json'), dossier);
-console.log(`hand-in written to ${out}`);
+
+// Read the dossier back and confirm it parses: a hand-in the judge cannot
+// read is no hand-in at all.
+const written = JSON.parse(readFileSync(join(out, 'dossier.json'), 'utf8'));
+if (written.schema !== 'makefun/dossier/v1') {
+  throw new Error(`unexpected dossier schema: ${String(written.schema)}`);
+}
+console.log(`hand-in written to ${out} (${dossier.length} bytes of dossier)`);
